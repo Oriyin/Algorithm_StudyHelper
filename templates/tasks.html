@@ -34,10 +34,10 @@
 
                         <!-- Icons for task operations -->
                         <button class="icon-btn" onclick="editTask({{ index }})">✎ Edit</button>
-                        <form method="POST" action="{{ url_for('delete_task', index=index) }}" style="display: inline;">
+                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="display: inline;">
                             <button type="submit" class="icon-btn">🗑 Delete</button>
                         </form>
-                        <form method="POST" action="{{ url_for('toggle_completed', index=index) }}" style="display: inline;">
+                        <form method="POST" action="{{ url_for('toggle_completed', task_id=task.id) }}" style="display: inline;">
                             <button type="submit" class="icon-btn">☑ Complete</button>
                         </form>
 
@@ -71,11 +71,10 @@
                         <p class="task-desc" id="desc-{{ index }}" style="display: none;">{{ task.description }}</p>
 
                         <!-- Icons for task operations -->
-                        <button class="icon-btn" onclick="editTask({{ index }})">✎ Edit</button>
-                        <form method="POST" action="{{ url_for('delete_task', index=index) }}" style="display: inline;">
+                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="display: inline;">
                             <button type="submit" class="icon-btn">🗑 Delete</button>
                         </form>
-                        <form method="POST" action="{{ url_for('toggle_completed', index=index) }}" style="display: inline;">
+                        <form method="POST" action="{{ url_for('toggle_completed', task_id=task.id) }}" style="display: inline;">
                             <button type="submit" class="icon-btn">☑ Uncomplete</button>
                         </form>
 

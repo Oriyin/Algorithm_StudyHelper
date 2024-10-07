@@ -50,7 +50,7 @@ h1, h2 {
 
 .dropdown-arrow:hover,
 .dropdown-arrow:focus {
-    color: #1abc9c;
+    color: #FFA500;
 }
 
 /* Task Item Styling */
@@ -78,8 +78,8 @@ h1, h2 {
 
 .icon-btn:hover,
 .icon-btn:focus {
-    color: #e74c3c;
-    border-color: #e74c3c;
+    color: #FFA500;
+    border-color: #FFA500;
 }
 
 /* Form Buttons */

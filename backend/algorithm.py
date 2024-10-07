@@ -1,3 +1,5 @@
+# This is code that simple completely perfect with Task part
+
 # backend/algorithm.py
 
 # Insertion Sort Algorithm (used for immediate sorting by due date when adding a new task)
@@ -53,24 +55,33 @@ def counting_sort(arr, key):
 # Heap Sort Algorithm (used for sorting by both due date and priority)
 def heap_sort(arr, key1, key2):
     n = len(arr)
+    # Build a max heap
     for i in range(n // 2 - 1, -1, -1):
         heapify(arr, n, i, key1, key2)
+    # Extract elements one by one
     for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]
+        arr[0], arr[i] = arr[i], arr[0]  # Swap the root (max element) with the last element
         heapify(arr, i, 0, key1, key2)
-    return arr
+
+    # Reverse the array to get the sorted order (from top to bottom)
+    return arr[::-1]  # Reversing the sorted list to ensure correct display order
 
 def heapify(arr, n, i, key1, key2):
-    largest = i
-    left = 2 * i + 1
-    right = 2 * i + 2
+    largest = i  # Initialize largest as root
+    left = 2 * i + 1  # Left child index
+    right = 2 * i + 2  # Right child index
 
+    # Compare left child with root
     if left < n and (arr[left][key1] < arr[largest][key1] or (arr[left][key1] == arr[largest][key1] and arr[left][key2] > arr[largest][key2])):
         largest = left
+
+    # Compare right child with largest so far
     if right < n and (arr[right][key1] < arr[largest][key1] or (arr[right][key1] == arr[largest][key1] and arr[right][key2] > arr[largest][key2])):
         largest = right
+
+    # Swap and continue heapifying if root is not largest
     if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]
+        arr[i], arr[largest] = arr[largest], arr[i]  # Swap
         heapify(arr, n, largest, key1, key2)
 
 # Naive String Search Algorithm (used for searching notes)
