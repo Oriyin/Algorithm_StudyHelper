@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Helper - Notes</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Notes</h1>
+        <form method="POST" action="{{ url_for('manage_notes') }}">
+            <input type="text" name="note_title" id="note_title" placeholder="Note Title" required><br>
+            <textarea name="note_content" id="note_content" placeholder="Write your note here..." required></textarea><br>
+            <button type="submit">Add Note</button>
+        </form>
+
+        <h2>Notes List</h2>
+        <ul>
+            {% for index, note in enumerate(notes) %}
+            <li class="note-item">
+                <strong>{{ note.title }}</strong>
+                <button onclick="toggleDescription({{ index }})" class="dropdown-arrow">&#9660;</button>
+                <p class="note-desc" id="desc-{{ index }}">{{ note.content }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Search Notes</h2>
+        <form method="POST" action="{{ url_for('search_notes') }}">
+            <input type="text" name="search_pattern" id="search_pattern" placeholder="Search notes..." required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if search_results %}
+        <h2>Search Results for "{{ search_pattern }}"</h2>
+        <ul>
+            {% for result in search_results %}
+            <li>
+                <strong>{{ result.note.title }}</strong>
+                <p>{{ result.note.content }}</p>
+                <p>Title Matches: {{ result.indices_title }}</p>
+                <p>Content Matches: {{ result.indices_content }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+</body>
+</html>
