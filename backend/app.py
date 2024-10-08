@@ -1,8 +1,7 @@
 # app.py
 
 from flask import Flask, request, render_template, redirect, url_for
-from algorithm import merge_sort, counting_sort, heap_sort, insertion_sort
-import re  # Import the re module for regular expression search
+from algorithm import merge_sort, counting_sort, heap_sort, insertion_sort, naive_string_search
 
 # Initialize the Flask application and specify the template folder
 app = Flask(__name__, template_folder="../templates")
@@ -40,6 +39,9 @@ def manage_tasks():
 
             # Sort tasks by due date immediately (excluding completed tasks) using Insertion Sort
             tasks = insertion_sort([task for task in tasks if not task['completed']], 'dueDate') + [task for task in tasks if task['completed']] 
+            
+            print("Updated tasks list:")
+            print(tasks)
 
     todo_tasks = [task for task in tasks if not task['completed']]
     done_tasks = [task for task in tasks if task['completed']]
@@ -59,6 +61,8 @@ def manage_notes():
                 'title': note_title,
                 'content': note_content
             })
+            print("Updated notes list:")
+            print(notes)
 
     return render_template('notes.html', notes=notes, enumerate=enumerate)
 
@@ -73,6 +77,8 @@ def edit_note(index):
         # Update the note with new values
         notes[index]['title'] = new_title
         notes[index]['content'] = new_content
+        print("Updated notes list:")
+        print(notes)
 
     return redirect(url_for('manage_notes'))
 
@@ -82,6 +88,8 @@ def delete_note(index):
     global notes
     if index < len(notes):
         notes.pop(index)
+        print("Updated notes list:")
+        print(notes)
     return redirect(url_for('manage_notes'))
 
 # Route to search through notes using a case-insensitive search with highlighted results
@@ -91,19 +99,21 @@ def search_notes():
     search_pattern = request.form.get('search_pattern').lower()  # Make the search pattern lowercase
     search_results = []
 
-    # Perform case-insensitive search on each note's title and content
+    # Perform case-insensitive search on each note's title and content using naive string search
     for index, note in enumerate(notes):
         title = note['title']
         content = note['content']
         highlighted_content = content
 
-        # Use regular expressions to find matches (case-insensitive)
-        matches = re.findall(re.escape(search_pattern), content, re.IGNORECASE)
+        # Use naive string search to find matches (case-insensitive)
+        matches = naive_string_search(content.lower(), search_pattern)  # Perform the search on lowercase text
 
         # If matches are found, highlight them in the content
         if matches:
-            for match in matches:
-                highlighted_content = re.sub(re.escape(match), f"<mark>{match}</mark>", highlighted_content, flags=re.IGNORECASE)
+            for match_index in matches:
+                # Highlight the matched text using HTML <mark> tag
+                match = content[match_index:match_index + len(search_pattern)]
+                highlighted_content = highlighted_content.replace(match, f"<mark>{match}</mark>")
             search_results.append({
                 'index': index,
                 'title': title,
@@ -132,6 +142,8 @@ def edit_task(index):
         tasks[index]['description'] = new_description
         tasks[index]['dueDate'] = new_due_date
         tasks[index]['priority'] = new_priority
+        print("Updated tasks list:")
+        print(tasks)
 
     # Re-sort tasks by due date immediately after editing using Insertion Sort
     tasks = insertion_sort([task for task in tasks if not task['completed']], 'dueDate') + [task for task in tasks if task['completed']]
@@ -145,6 +157,8 @@ def toggle_completed(task_id):
     for task in tasks:
         if task['id'] == task_id:
             task['completed'] = not task['completed']
+            print("Updated tasks list:")
+            print(tasks)
             break
     # Re-sort the tasks to ensure they are in the correct order
     tasks = insertion_sort([task for task in tasks if not task['completed']], 'dueDate') + [task for task in tasks if task['completed']]
@@ -155,6 +169,8 @@ def toggle_completed(task_id):
 def delete_task(task_id):
     global tasks
     tasks = [task for task in tasks if task['id'] != task_id]
+    print("Updated tasks list:")
+    print(tasks)
     return redirect(url_for('manage_tasks'))
 
 # Route to sort tasks by due date using Merge Sort
@@ -164,6 +180,8 @@ def sort_by_due_date():
     incomplete_tasks = [task for task in tasks if not task['completed']]
     # Use merge_sort to sort the incomplete tasks by 'dueDate'
     tasks = merge_sort(incomplete_tasks, 'dueDate') + [task for task in tasks if task['completed']]
+    print("Updated tasks list:")
+    print(tasks)
     return redirect(url_for('manage_tasks'))
 
 # Route to sort tasks by priority
@@ -172,6 +190,8 @@ def sort_by_priority():
     global tasks
     incomplete_tasks = [task for task in tasks if not task['completed']]
     tasks = counting_sort(incomplete_tasks, 'priority') + [task for task in tasks if task['completed']]
+    print("Updated tasks list:")
+    print(tasks)
     return redirect(url_for('manage_tasks'))
 
 # Route to sort tasks by both due date and priority
@@ -180,8 +200,12 @@ def sort_by_both():
     global tasks
     incomplete_tasks = [task for task in tasks if not task['completed']]
     tasks = heap_sort(incomplete_tasks, 'dueDate', 'priority') + [task for task in tasks if task['completed']]
+    print("Updated tasks list:")
+    print(tasks)
     return redirect(url_for('manage_tasks'))
 
 # Run the Flask server
 if __name__ == "__main__":
     app.run(debug=True)
+    print(tasks)
+    print(notes)

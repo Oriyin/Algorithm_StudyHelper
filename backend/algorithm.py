@@ -1,4 +1,4 @@
-# This is code that simple completely perfect with Task part
+# This is code perfectly work entire program.
 
 # backend/algorithm.py
 
