@@ -1,5 +1,8 @@
+# app.py
+
 from flask import Flask, request, render_template, redirect, url_for
-from algorithm import merge_sort, counting_sort, heap_sort, naive_string_search, insertion_sort
+from algorithm import merge_sort, counting_sort, heap_sort, insertion_sort
+import re  # Import the re module for regular expression search
 
 # Initialize the Flask application and specify the template folder
 app = Flask(__name__, template_folder="../templates")
@@ -59,27 +62,60 @@ def manage_notes():
 
     return render_template('notes.html', notes=notes, enumerate=enumerate)
 
-# Route to search through notes using a naive string search algorithm
+# Route to edit a specific note by index
+@app.route('/edit_note/<int:index>', methods=['POST'])
+def edit_note(index):
+    global notes
+    new_title = request.form.get('edit_note_title')
+    new_content = request.form.get('edit_note_content')
+
+    if new_title and new_content:
+        # Update the note with new values
+        notes[index]['title'] = new_title
+        notes[index]['content'] = new_content
+
+    return redirect(url_for('manage_notes'))
+
+# Route to delete a specific note by index
+@app.route('/delete_note/<int:index>', methods=['POST'])
+def delete_note(index):
+    global notes
+    if index < len(notes):
+        notes.pop(index)
+    return redirect(url_for('manage_notes'))
+
+# Route to search through notes using a case-insensitive search with highlighted results
 @app.route('/search_notes', methods=['POST'])
 def search_notes():
     global notes
-    search_pattern = request.form.get('search_pattern')
+    search_pattern = request.form.get('search_pattern').lower()  # Make the search pattern lowercase
     search_results = []
 
-    # Perform naive string search on each note's title and content
-    for note in notes:
-        indices_title = naive_string_search(note['title'], search_pattern)
-        indices_content = naive_string_search(note['content'], search_pattern)
+    # Perform case-insensitive search on each note's title and content
+    for index, note in enumerate(notes):
+        title = note['title']
+        content = note['content']
+        highlighted_content = content
 
-        # If a match is found, add it to the search results
-        if indices_title or indices_content:
+        # Use regular expressions to find matches (case-insensitive)
+        matches = re.findall(re.escape(search_pattern), content, re.IGNORECASE)
+
+        # If matches are found, highlight them in the content
+        if matches:
+            for match in matches:
+                highlighted_content = re.sub(re.escape(match), f"<mark>{match}</mark>", highlighted_content, flags=re.IGNORECASE)
             search_results.append({
-                'note': note,
-                'indices_title': indices_title,
-                'indices_content': indices_content
+                'index': index,
+                'title': title,
+                'highlighted_content': highlighted_content
             })
 
-    return render_template('notes.html', notes=notes, search_results=search_results, search_pattern=search_pattern, enumerate=enumerate)
+    # If no matches are found, set a message to be displayed
+    no_match_message = None
+    if not search_results:
+        no_match_message = "Don't have any file that match with finding word."
+
+    return render_template('notes.html', notes=notes, search_results=search_results, no_match_message=no_match_message, search_pattern=search_pattern, enumerate=enumerate)
 
 # Route to edit a specific task by index
 @app.route('/edit_task/<int:index>', methods=['POST'])

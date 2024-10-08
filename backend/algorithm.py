@@ -43,8 +43,9 @@ def counting_sort(arr, key):
     for item in arr:
         count[item[key]] += 1
 
-    for i in range(1, max_priority + 1):
-        count[i] += count[i - 1]
+    # Modify count to get the descending order position
+    for i in range(max_priority - 1, -1, -1):
+        count[i] += count[i + 1]
 
     for item in reversed(arr):
         output[count[item[key]] - 1] = item

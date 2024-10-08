@@ -5,45 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Helper - Notes</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
     <div class="container">
         <h1>Notes</h1>
+        <!-- Form for adding a new note -->
         <form method="POST" action="{{ url_for('manage_notes') }}">
             <input type="text" name="note_title" id="note_title" placeholder="Note Title" required><br>
-            <textarea name="note_content" id="note_content" placeholder="Write your note here..." required></textarea><br>
+            <!-- Updated textarea for note content -->
+            <textarea name="note_content" id="note_content" placeholder="Write your note here..." required style="width: 80%; height: 150px; resize: none;"></textarea><br>
             <button type="submit">Add Note</button>
         </form>
 
+        <!-- Notes List -->
         <h2>Notes List</h2>
         <ul>
             {% for index, note in enumerate(notes) %}
             <li class="note-item">
                 <strong>{{ note.title }}</strong>
+                <!-- Dropdown button to toggle note content -->
                 <button onclick="toggleDescription({{ index }})" class="dropdown-arrow">&#9660;</button>
-                <p class="note-desc" id="desc-{{ index }}">{{ note.content }}</p>
+                <!-- Note content display -->
+                <p class="note-desc" id="desc-{{ index }}" style="display: none;">{{ note.content }}</p>
+
+                <!-- Icons for note operations -->
+                <button class="icon-btn" onclick="editNote({{ index }})">✎ Edit</button>
+                
+                <!-- Form for deleting a note -->
+                <form method="POST" action="{{ url_for('delete_note', index=index) }}" style="display: inline;">
+                    <button type="submit" class="icon-btn">🗑 Delete</button>
+                </form>
+
+                <!-- Hidden form for editing note -->
+                <div class="edit-form" id="edit-note-form-{{ index }}" style="display: none;">
+                    <form method="POST" action="{{ url_for('edit_note', index=index) }}">
+                        <input type="text" name="edit_note_title" value="{{ note.title }}" placeholder="Edit Note Title" required><br>
+                        <textarea name="edit_note_content" placeholder="Edit Note Content" required style="width: 80%; height: 150px; resize: none;">{{ note.content }}</textarea><br>
+                        <button type="submit">Save</button>
+                        <button type="button" onclick="cancelEditNote({{ index }})">Cancel</button>
+                    </form>
+                </div>
             </li>
             {% endfor %}
         </ul>
 
+        <!-- Search notes form -->
         <h2>Search Notes</h2>
         <form method="POST" action="{{ url_for('search_notes') }}">
             <input type="text" name="search_pattern" id="search_pattern" placeholder="Search notes..." required>
             <button type="submit">Search</button>
         </form>
 
+        <!-- Display search results -->
         {% if search_results %}
         <h2>Search Results for "{{ search_pattern }}"</h2>
         <ul>
             {% for result in search_results %}
             <li>
-                <strong>{{ result.note.title }}</strong>
-                <p>{{ result.note.content }}</p>
-                <p>Title Matches: {{ result.indices_title }}</p>
-                <p>Content Matches: {{ result.indices_content }}</p>
+                <strong>{{ result.title }}</strong>
+                <button onclick="toggleDescription('search-{{ result.index }}')" class="dropdown-arrow">&#9660;</button>
+                <p class="note-desc" id="desc-search-{{ result.index }}" style="display: none;">{{ result.highlighted_content|safe }}</p>
             </li>
             {% endfor %}
         </ul>
+        {% elif no_match_message %}
+        <h2>{{ no_match_message }}</h2>
         {% endif %}
 
         <a href="{{ url_for('home') }}">Back to Home</a>
