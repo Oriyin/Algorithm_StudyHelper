@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <!-- ลิงก์ไฟล์ CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='flashstyle.css') }}">
+    <script>
+        // ฟังก์ชันเพื่อแจ้งเตือนเมื่อไม่มีคำศัพท์ที่ผิด
+        function noIncorrectFlashcardsAlert() {
+            alert("There are no incorrect flashcards at the moment.");
+            window.location.href = "{{ url_for('home') }}";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Flashcard Manager</h1>
+
+        <!-- Form สำหรับการเพิ่ม flashcard -->
+        <form method="POST" action="{{ url_for('manage_flashcards') }}">
+            <label for="term">Term:</label>
+            <input type="text" name="term" id="term" required><br>
+
+            <label for="meaning">Meaning:</label>
+            <input type="text" name="meaning" id="meaning" required><br>
+
+            <!-- Dropdown for selecting difficulty -->
+            <label for="difficulty">Difficulty:</label>
+            <select name="difficulty" id="difficulty" required>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select><br><br>
+
+            <div class="button-container">
+                <button type="submit">Add Flashcard</button>
+            </div>
+        </form>
+
+        <!-- Display total number of flashcards -->
+        <h2>Total Flashcards: {{ flashcards|length }}</h2>
+
+        <h2>Flashcards List</h2>
+        <ul>
+            {% for flashcard in flashcards %}
+                <li>{{ flashcard.term }} - {{ flashcard.meaning }} ({{ flashcard.difficulty }})</li>
+            {% endfor %}
+        </ul>
+
+        <div class="button-container">
+            <!-- Button to start random practice -->
+            <form method="GET" action="{{ url_for('start_practice') }}">
+                <button type="submit">Start Random Practice</button>
+            </form>
+
+            <!-- Button to start practice sorted by difficulty -->
+            <form method="GET" action="{{ url_for('start_practice_by_difficulty') }}">
+                <button type="submit">Start Practice (Easy to Hard)</button>
+            </form>
+
+            <!-- Button to start reviewing flashcards that need more practice (incorrect_count > 2) -->
+            <form method="GET" action="{{ url_for('start_focused_practice') }}">
+                {% if flashcards|length == 0 %}
+                    <!-- If no incorrect flashcards, trigger the alert -->
+                    <button type="button" onclick="noIncorrectFlashcardsAlert()">Start Focused Practice (Review Difficult Flashcards)</button>
+                {% else %}
+                    <button type="submit">Start Focused Practice (Review Difficult Flashcards)</button>
+                {% endif %}
+            </form>
+
+            <!-- Button to go back to the home page -->
+            <form method="GET" action="{{ url_for('home') }}">
+                <button type="submit">Back to Home</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

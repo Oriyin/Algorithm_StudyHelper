@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Flashcards</title>
+</head>
+<body>
+    <h1>Focused Flashcard Practice</h1>
+
+    <!-- Display the current flashcard -->
+    <p>Term: {{ flashcard.term }}</p>
+    <p>Meaning: {{ flashcard.meaning }}</p>
+
+    <!-- Form to submit whether the answer was correct or incorrect -->
+    <form method="POST" action="{{ url_for('practice_focused_flashcards', index=index) }}">
+        <button type="submit" name="is_correct" value="true">Correct</button>
+        <button type="submit" name="is_correct" value="false">Incorrect</button>
+    </form>
+</body>
+</html>

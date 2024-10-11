@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Completed</title>
+</head>
+<body>
+    <h1>Practice Completed!</h1>
+
+    <!-- Display results for correct and incorrect flashcards -->
+    <h2>Correct Flashcards</h2>
+    <ul>
+        {% for flashcard in correct_flashcards %}
+            <li>{{ flashcard.term }} - {{ flashcard.meaning }} ({{ flashcard.difficulty }})</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Incorrect Flashcards</h2>
+    <ul>
+        {% for flashcard in incorrect_flashcards %}
+            <li>{{ flashcard.term }} - {{ flashcard.meaning }} ({{ flashcard.difficulty }}) - Incorrect Count: {{ flashcard.incorrect_count }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Button for practicing again with random order -->
+    <form method="GET" action="{{ url_for('practice_again_random') }}">
+        <button type="submit">Practice Again (Random)</button>
+    </form>
+
+<!-- Button for practicing again sorted by difficulty (Easy to Hard) -->
+<form method="GET" action="{{ url_for('practice_again_easy_to_hard') }}">
+    <button type="submit">Practice Again (Easy to Hard)</button>
+</form>
+
+
+    <!-- Button to go back to the flashcards main page -->
+    <form method="GET" action="{{ url_for('manage_flashcards') }}">
+        <button type="submit">Back to Flashcards</button>
+    </form>
+</body>
+</html>

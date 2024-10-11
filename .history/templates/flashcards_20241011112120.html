@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+</head>
+<body>
+    <h1>Flashcard Manager</h1>
+
+    <!-- Form สำหรับการเพิ่ม flashcard -->
+    <form method="POST" action="{{ url_for('manage_flashcards') }}">
+        <label for="term">Term:</label>
+        <input type="text" name="term" id="term" required><br>
+
+        <label for="meaning">Meaning:</label>
+        <input type="text" name="meaning" id="meaning" required><br>
+
+        <button type="submit">Add Flashcard</button>
+    </form>
+
+    <h2>Flashcards List</h2>
+    <ul>
+        {% for flashcard in flashcards %}
+            <li>{{ flashcard.term }} - {{ flashcard.meaning }}</li>
+        {% endfor %}
+    </ul>
+
+    <form method="GET" action="{{ url_for('start_practice') }}">
+        <button type="submit">Start Practice</button>
+    </form>
+</body>
+</html>

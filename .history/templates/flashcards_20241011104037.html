@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Flashcards</h1>
+        <!-- Form to add a new flashcard -->
+        <form method="POST" action="{{ url_for('manage_flashcards') }}">
+
+            <input type="text" name="term" placeholder="Term" required><br>
+            <input type="text" name="meaning" placeholder="Meaning" required><br>
+            <input type="number" name="incorrect_count" placeholder="Incorrect Count" required><br>
+            <button type="submit">Add Flashcard</button>
+        </form>
+
+        <!-- List of flashcards -->
+        <h2>Flashcard List</h2>
+        <ul>
+            {% for index, flashcard in enumerate(flashcards) %}
+            <li>
+                <strong>{{ flashcard.term }}</strong> 
+                <button onclick="toggleMeaning({{ index }})">Show/Hide Meaning</button>
+                <p id="meaning-{{ index }}" style="display: none;">{{ flashcard.meaning }}</p>
+                <p>Incorrect Count: {{ flashcard.incorrect_count }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Buttons for randomizing, sorting, and dividing flashcards -->
+        <form method="POST" action="{{ url_for('randomize_flashcards') }}">
+            <button type="submit">Randomize Flashcards</button>
+        </form>
+        <form method="POST" action="{{ url_for('sort_flashcards') }}">
+            <button type="submit">Sort by Incorrect Count</button>
+        </form>
+        <form method="POST" action="{{ url_for('divide_flashcards') }}">
+            <input type="number" name="low_threshold" placeholder="Low Threshold (e.g., 3)" required>
+            <button type="submit">Divide Flashcards</button>
+        </form>
+    </div>
+</body>
+</html>

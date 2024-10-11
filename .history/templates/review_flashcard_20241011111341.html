@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Flashcards</title>
+</head>
+<body>
+    <h1>Practice Flashcards</h1>
+
+    <p><strong>Term:</strong> {{ flashcard.term }}</p>
+
+    <form method="POST">
+        <p><strong>Meaning:</strong> {{ flashcard.meaning }}</p>
+        <label>Did you get it right?</label><br>
+        <button type="submit" name="is_correct" value="true">Correct</button>
+        <button type="submit" name="is_correct" value="false">Incorrect</button>
+    </form>
+</body>
+</html>

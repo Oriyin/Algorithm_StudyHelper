@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Flashcard Manager</h1>
+
+        <!-- Form to add a new flashcard -->
+        <div class="add-flashcard-form">
+            <h2>Add New Flashcard</h2>
+            <form method="POST" action="{{ url_for('manage_flashcards') }}">
+                <label for="term">Term:</label><br>
+                <input type="text" name="term" id="term" placeholder="Enter term" required><br><br>
+
+                <label for="meaning">Meaning:</label><br>
+                <input type="text" name="meaning" id="meaning" placeholder="Enter meaning" required><br><br>
+
+                <label for="incorrect_count">Incorrect Count:</label><br>
+                <input type="number" name="incorrect_count" id="incorrect_count" value="0" min="0" required><br><br>
+
+                <button type="submit" class="btn">Add Flashcard</button>
+            </form>
+        </div>
+
+        <!-- Start review session -->
+        <div class="start-review-section">
+            <h2>Start Flashcard Review</h2>
+            <form method="GET" action="{{ url_for('start_review') }}">
+                <button type="submit" class="btn start-review-btn">Start Review</button>
+            </form>
+        </div>
+
+        <!-- List of flashcards -->
+        <div class="flashcard-list">
+            <h2>Flashcard List</h2>
+            <ul>
+                {% for index, flashcard in enumerate(flashcards) %}
+                <li class="flashcard-item">
+                    <strong>{{ flashcard.term }}</strong>
+                    <button class="toggle-meaning-btn" onclick="toggleMeaning({{ index }})">Show/Hide Meaning</button>
+                    <p id="meaning-{{ index }}" style="display: none;" class="flashcard-meaning">{{ flashcard.meaning }}</p>
+                    <p>Incorrect Count: {{ flashcard.incorrect_count }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Flashcard controls -->
+        <div class="flashcard-controls">
+            <form method="POST" action="{{ url_for('randomize_flashcards') }}">
+                <button type="submit" class="btn">Randomize Flashcards</button>
+            </form>
+            <form method="POST" action="{{ url_for('sort_flashcards') }}">
+                <button type="submit" class="btn">Sort by Incorrect Count</button>
+            </form>
+            <form method="POST" action="{{ url_for('divide_flashcards') }}">
+                <input type="number" name="low_threshold" placeholder="Low Threshold (e.g., 3)" required>
+                <button type="submit" class="btn">Divide Flashcards</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focused Flashcard Practice</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='flashstyle.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Focused Flashcard Practice</h1>
+
+        <!-- Display the current flashcard -->
+        <div class="todo-column">
+            <p><strong>Term:</strong> {{ flashcard.term }}</p>
+            <p><strong>Meaning:</strong> {{ flashcard.meaning }}</p>
+        </div>
+
+        <!-- Form to submit whether the answer was correct or incorrect -->
+        <div class="button-container">
+            <form method="POST" action="{{ url_for('practice_focused_flashcards', index=index) }}">
+                <button type="submit" name="is_correct" value="true" class="btn">Correct</button>
+                <button type="submit" name="is_correct" value="false" class="btn">Incorrect</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

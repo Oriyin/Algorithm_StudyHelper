@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Review</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Review Flashcard</h1>
+        <div class="flashcard">
+            <h2>{{ flashcard.term }}</h2>
+            <p>{{ flashcard.meaning }}</p>
+
+            <!-- User's answer -->
+            <form method="POST" action="{{ url_for('review_flashcard', index=index) }}">
+                <button type="submit" name="is_correct" value="true" class="btn correct-btn">Correct</button>
+                <button type="submit" name="is_correct" value="false" class="btn incorrect-btn">Incorrect</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

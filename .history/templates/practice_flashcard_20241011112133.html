@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Flashcards</title>
+    <script>
+        // ฟังก์ชันเพื่อสลับการแสดง/ซ่อนคำแปล
+        function toggleMeaning() {
+            const meaning = document.getElementById('meaning');
+            if (meaning.style.display === 'none') {
+                meaning.style.display = 'block';
+            } else {
+                meaning.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Practice Flashcards</h1>
+
+    <p><strong>Term:</strong> {{ flashcard.term }}</p>
+
+    <!-- ปุ่มสำหรับแสดง/ซ่อนคำแปล -->
+    <button onclick="toggleMeaning()">Show/Hide Meaning</button>
+    <p id="meaning" style="display: none;"><strong>Meaning:</strong> {{ flashcard.meaning }}</p>
+
+    <form method="POST">
+        <label>Did you get it right?</label><br>
+        <button type="submit" name="is_correct" value="true">Correct</button>
+        <button type="submit" name="is_correct" value="false">Incorrect</button>
+    </form>
+</body>
+</html>

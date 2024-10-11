@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Completed</title>
+</head>
+<body>
+    <h1>Practice Completed</h1>
+
+    <h2>Correct Flashcards</h2>
+    <ul>
+        {% for flashcard in correct_flashcards %}
+            <li>{{ flashcard.term }} - {{ flashcard.meaning }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Incorrect Flashcards</h2>
+    <ul>
+        {% for flashcard in incorrect_flashcards %}
+            <li>{{ flashcard.term }} - {{ flashcard.meaning }} | Incorrect Count: {{ flashcard.incorrect_count }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focused Practice Completed</title>
+</head>
+<body>
+    <h1>Focused Practice Completed</h1>
+
+    <!-- Display message based on flashcards left -->
+    {% if flashcards_left > 0 %}
+        <p>You still have {{ flashcards_left }} flashcards left to review.</p>
+    {% else %}
+        <p>You have completed the focused practice session. All flashcards were reviewed successfully.</p>
+    {% endif %}
+
+    <!-- Button to go back to flashcards management -->
+    <form method="GET" action="{{ url_for('manage_flashcards') }}">
+        <button type="submit">Back to Flashcards</button>
+    </form>
+</body>
+</html>

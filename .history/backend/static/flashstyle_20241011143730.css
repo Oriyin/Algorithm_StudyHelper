@@ -1,0 +1,160 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+h1, h2 {
+    color: #3498db;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+/* Flashcard Form Styles */
+form {
+    margin: 30px 0;
+    text-align: left;
+}
+
+input, select {
+    width: 90%;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.1em;
+    background-color: #f4f4f4;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1em;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Flashcards List */
+.task-columns {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.todo-column {
+    width: 100%;
+    background-color: #ecf0f1;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+li {
+    list-style: none;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #2c3e50;
+    transition: background-color 0.3s ease;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+li strong {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+li:hover {
+    background-color: #d5eaf7;
+    border-radius: 5px;
+}
+
+/* Button Styles */
+.btn {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 10px;
+    display: inline-block;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #1abc9c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Container for buttons */
+.button-container {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    li {
+        font-size: 1em;
+    }
+}
